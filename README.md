@@ -3,4 +3,4 @@ I have tested with a nano arduino and a usb to serial DMX 512 controller (https:
 There will need to be some improvements on comments on modularity but this is train of thought and mock up coding now
 I have included the sketch code also for the Nano. So far there has been no latency testing with my setup.
 
-I would also like to give a call out to the creator of DMXSimples who gave me a great start their repository is at https://github.com/BrunoDPO/DMXSimples
+I would also like to give a call out to the creator of DMXSimples who gave me a great start!!! Their repository is at https://github.com/BrunoDPO/DMXSimples
