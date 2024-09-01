@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDmx2.Models;
 using System.Text.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Formats.Asn1.AsnWriter;
-using System.Reflection;
-using System.Diagnostics.Eventing.Reader;
-using System.Timers;
-
+using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
+using LibVLCSharp.Shared;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using AxWMPLib;
 namespace TestDmx2
 {
     public partial class DMXandARD : Form
@@ -48,6 +41,8 @@ namespace TestDmx2
         String OldMessage = "";
         DataSet ArdInfo=new DataSet();
         DataSet MusicFilesInfo = new DataSet();
+        bool _isAlreadyPlaying;
+        bool _loopPlaying;
         public DMXandARD()
         {
             InitializeComponent();
@@ -83,27 +78,30 @@ namespace TestDmx2
             FixtureComboBox.Items.Clear();
             FixtureComboBox.Items.Add("All Fixtures");
             FixtureComboBox.SelectedIndex = 0;
-            autoSave(ActiveProject);
-            DataTable configTable = new DataTable();
+
+            /*DataTable configTable = new DataTable();
             configTable.TableName = "Config";
             configTable.Columns.Add(new DataColumn("PortNumber"));
             configTable.Columns.Add(new DataColumn("IO"));
-            configTable.Columns.Add(new DataColumn("Triggered"));
-            ArdInfo.Tables.Add(configTable);
+            configTable.Columns.Add(new DataColumn("Triggered"));*/
+            ArdInfo.Tables.Add(ActiveProject.getArdData());
             dataGridARD.AutoGenerateColumns = true;
             dataGridARD.DataSource = ArdInfo;
             dataGridARD.DataMember = "Config";
             dataGridARD.Refresh();
-            configTable = new DataTable();
+            /*configTable = new DataTable();
             configTable.TableName = "MusicConfig";
             configTable.Columns.Add(new DataColumn("Name"));
-            configTable.Columns.Add(new DataColumn("Details"));
-            configTable.Columns.Add(new DataColumn("Path"));
-            MusicFilesInfo.Tables.Add(configTable);
+            configTable.Columns.Add(new DataColumn("Owner"));
+            configTable.Columns.Add(new DataColumn("Title"));
+            configTable.Columns.Add(new DataColumn("Rating"));
+            configTable.Columns.Add(new DataColumn("Path"));*/
+            MusicFilesInfo.Tables.Add(ActiveProject.getMusicData());
             dataGridMusic.AutoGenerateColumns = true;
             dataGridMusic.DataSource = MusicFilesInfo;
             dataGridMusic.DataMember = "MusicConfig";
             dataGridMusic.Refresh();
+            autoSave(ActiveProject);
         }
         private void refreshScenes()
         {
@@ -128,7 +126,7 @@ namespace TestDmx2
         private void autoSave(DMXARDproject activeProject)
         {
             streamAutoSave = new StreamWriter("autoSave.json",false);
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            var options = new JsonSerializerOptions { WriteIndented = true,MaxDepth=400 };
             string jsonString = JsonSerializer.Serialize<DMXARDproject>(activeProject, options);
             streamAutoSave.WriteLine(jsonString);
             streamAutoSave.Close();
@@ -190,7 +188,9 @@ namespace TestDmx2
                     NewRow[2] = 0;
                     ArdInfo.Tables[0].Rows.Add(NewRow);
                     ArdInfo.Tables[0].AcceptChanges();
-                    
+                    ActiveProject.setArdTable(ArdInfo.Tables[0]);
+
+
                 }
 
             }
@@ -221,6 +221,7 @@ namespace TestDmx2
                                 break;
                         }
                         ARDrows[0].AcceptChanges();
+                        ActiveProject.setArdTable(ArdInfo.Tables[0]);
                     }
                 }
             }
@@ -261,31 +262,77 @@ namespace TestDmx2
         }
         private void MusicButton_Click(object sender, EventArgs e)
         {
-            var dlg = new OpenFileDialog();
-            dlg.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
-            dlg.Multiselect = false;
-
-            if (dlg.ShowDialog() != DialogResult.OK)
-                return;
+           
             String SendButton = ((System.Windows.Forms.Button)sender).Name;
+            switch(SendButton)
+            {
+                case "AddMusic":
+                    var dlg = new OpenFileDialog();
+                    dlg.Filter = "Mp3 Files (*.mp3)|*.mp3|All Files (*.*)|*.*";
+                    dlg.Multiselect = true;
+
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
                     foreach (var path in dlg.FileNames)
                     {
+                        FileInfo fileInform = new FileInfo(path);
                         DataRow NewRow;
                         NewRow = MusicFilesInfo.Tables[0].NewRow();
-                        NewRow[0] = "";
-                        NewRow[1] = "";
-                        NewRow[2] = path;
+                        NewRow[0] = fileInform.Name;
+                        NewRow[1] = fileInform.GetAccessControl().GetOwner(typeof(System.Security.Principal.NTAccount)).ToString();
+                        NewRow[2] = ShellFile.FromFilePath(path).Properties.System.Title.Value;
+                        NewRow[3] = ShellFile.FromFilePath(path).Properties.System.RatingText.Value;
+                        NewRow[4] = path;
                         MusicFilesInfo.Tables[0].Rows.Add(NewRow);
                         MusicFilesInfo.Tables[0].AcceptChanges();
+                        ActiveProject.setMusicTable(MusicFilesInfo.Tables[0]);
                     }
-            dataGridMusic.Refresh();
+                    dataGridMusic.Refresh();
+                    break;
+                case "PlayMusic":
+                    foreach(DataGridViewRow RowData in dataGridMusic.SelectedRows)
+                    {
+                        Messages.Items.Add(RowData.Cells[4].Value.ToString());
+                        _isAlreadyPlaying = true;
+                        //PlayerWindow.uiMode = "None";
+                        axWindowsMediaPlayer1.URL = RowData.Cells[4].Value.ToString(); 
+                        Messages.SelectedIndex = Messages.Items.Count - 1;
+                        axWindowsMediaPlayer1.Ctlcontrols.play();
+                        
+                    }
+                    break;
             }
+                    
+         }
+        private void PlayerWindow_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            Messages.Items.Add(e.newState);
+            Messages.SelectedIndex = Messages.Items.Count - 1;
+            if (e.newState == 3 || e.newState == 9)
+            {
+                _isAlreadyPlaying = true;
+                PlayerWindow.Size = new Size(this.Width, this.Height);
+                PlayerWindow.Location = new Point(0, 0);
+                PlayerWindow.BringToFront();
+                PlayerWindow.Visible = true;
+                PlayerWindow.stretchToFit = true;
+            }
+            else
+            {
+                PlayerWindow.Visible = false;
+                _isAlreadyPlaying = false;
+                PlayerWindow.Size = new Size(800, 600);
+                PlayerWindow.Location = new Point(0, 0);
+                PlayerWindow.SendToBack();
+            }
+        }
         private void ARDConnectionButton_Click(object sender, EventArgs e)
         {
             if (SerialDevices.Text.CompareTo("") != 0)
             {
                 try
                 {
+                    ActiveProject.ArdDevicePort = SerialDevices.Text;
                     ARDCOMPORT = initialize_PORT(SerialDevices.Text);
                     ARDCOMPORT.Open();
                     Messages.Items.Add("Connected");
@@ -393,6 +440,7 @@ namespace TestDmx2
             COMPORT = new SerialPort();
             //COMPORT.DataReceived += new SerialDataReceivedEventHandler(serialPort1_DataReceived);
             buffer[0] = 0;
+            ActiveProject.DmxDevicePort = SerialDevicesDMX.Text;
             COMPORT.PortName = SerialDevicesDMX.Text;
             COMPORT.BaudRate = 250000;
             //COMPORT.BaudRate = 115200;
@@ -846,31 +894,49 @@ namespace TestDmx2
         }
         private void LoadSave_Click(object sender, EventArgs e)
         {
-            //buttonLoadConfig
-            //buttonSaveConfig
-            var dlg = new OpenFileDialog();
-            dlg.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
-            dlg.Multiselect = false;
-
-            if (dlg.ShowDialog() != DialogResult.OK)
-            return;
+         
             String SendButton = ((System.Windows.Forms.Button)sender).Name;
             switch (SendButton)
             {
                 case "buttonLoadConfig":
-                    
-                        foreach (var path in dlg.FileNames)
+
+                    var dlg = new OpenFileDialog();
+                    dlg.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
+                    dlg.Multiselect = false;
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
+                    foreach (var path in dlg.FileNames)
                         {
                             StreamReader sr = new StreamReader(path);
                             string jsonData = sr.ReadToEnd();
                             ActiveProject = new DMXARDproject();
                             ActiveProject = JsonSerializer.Deserialize<DMXARDproject>(jsonData);
-                            bringUpScene("(AutoSaveScene)");
+                        SerialDevicesDMX.Text=ActiveProject.DmxDevicePort;
+                        SerialDevices.Text = ActiveProject.ArdDevicePort;
+                        ActiveProject.refreshArdTableData();
+                        ActiveProject.refreshMusicTableData();
+                        ArdInfo = new DataSet();
+                        MusicFilesInfo = new DataSet();
+                        ArdInfo.Tables.Add(ActiveProject.getArdData());
+                        dataGridARD.AutoGenerateColumns = true;
+                        dataGridARD.DataSource = ArdInfo;
+                        dataGridARD.DataMember = "Config";
+                        dataGridARD.Refresh();
+                        MusicFilesInfo.Tables.Add(ActiveProject.getMusicData());
+                        dataGridMusic.AutoGenerateColumns = true;
+                        dataGridMusic.DataSource = MusicFilesInfo;
+                        dataGridMusic.DataMember = "MusicConfig";
+                        dataGridMusic.Refresh();
+                        bringUpScene("(AutoSaveScene)");
                             return;
                         }
                     break;
                 case "buttonSaveConfig":
-                        foreach (var path in dlg.FileNames)
+                    var dlgSave = new SaveFileDialog();
+                    dlgSave.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
+                    if (dlgSave.ShowDialog() != DialogResult.OK)
+                        return;
+                    foreach (var path in dlgSave.FileNames)
                         {
                             streamAutoSave = new StreamWriter(path, false);
                             var options = new JsonSerializerOptions { WriteIndented = true };

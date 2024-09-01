@@ -5,13 +5,37 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="LibVLCSharp" Version="3.9.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.WindowsAPICodePack.Shell" Version="1.1.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
   </ItemGroup>
+	<ItemGroup>
+		<COMReference Include="WMPLib">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>1</VersionMajor>
+			<Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>False</EmbedInteropTypes>
+		</COMReference>
+		<COMReference Include="AxWMPLib">
+			<WrapperTool>aximp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>1</VersionMajor>
+			<Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>False</EmbedInteropTypes>
+		</COMReference>
+	</ItemGroup>
   <ItemGroup>
     <Compile Update="ConfirmDialog.cs">
       <SubType>Form</SubType>
