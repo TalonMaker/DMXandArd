@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace TestDmx2.Models
 {
-    class DMXFixtures
+    public class DMXFixtures
     {
         public DMXFixtures() {
             DMXfixtureList = new List<DMXfixture>();
@@ -31,7 +31,7 @@ namespace TestDmx2.Models
             return other;
         }
     }
-    class DMXfixture
+    public class DMXfixture
     {
         public DMXfixture() {
             Channels = new List<int>();
@@ -52,7 +52,7 @@ namespace TestDmx2.Models
         public Boolean isIndividual { get; set; }
     }
     
-    class ArdDataList
+    public class ArdDataList
     {
         public ArdDataList()
         {
@@ -64,7 +64,7 @@ namespace TestDmx2.Models
         public string IO { get; set; }
         public string Triggered { get; set; }
     }
-    class MusicDataList
+    public class MusicDataList
     {
         public MusicDataList()
         {
@@ -80,7 +80,7 @@ namespace TestDmx2.Models
         public string Rating { get; set; }
         public string Path {  get; set; }
     }
-    class DMXARDproject
+    public class DMXARDproject
     {
         public DMXARDproject()
         {
@@ -152,18 +152,20 @@ namespace TestDmx2.Models
             MusicData.Columns.Add(new DataColumn("Title"));
             MusicData.Columns.Add(new DataColumn("Rating"));
             MusicData.Columns.Add(new DataColumn("Path"));
-            foreach(MusicDataList items in  listMusic)
+            if (listMusic != null)
             {
-                DataRow newRow= MusicData.NewRow();
-                newRow[0] = items.Name;
-                newRow[1] = items.Owner;
-                newRow[2] = items.Title;
-                newRow[3] = items.Rating;
-                newRow[4] = items.Path;
-                MusicData.Rows.Add(newRow);
-                MusicData.AcceptChanges();
+                foreach (MusicDataList items in listMusic)
+                {
+                    DataRow newRow = MusicData.NewRow();
+                    newRow[0] = items.Name;
+                    newRow[1] = items.Owner;
+                    newRow[2] = items.Title;
+                    newRow[3] = items.Rating;
+                    newRow[4] = items.Path;
+                    MusicData.Rows.Add(newRow);
+                    MusicData.AcceptChanges();
+                }
             }
-
         }
         public void refreshArdTableData()
         { 
@@ -185,7 +187,6 @@ namespace TestDmx2.Models
         public Dictionary<String, DMXFixtures> Scenes { get; set; }
         public string ArdDevicePort { get; set; }
         public string DmxDevicePort { get; set; }
-        public string ArdConfigPins { get; set; }
         private DataTable MusicData { get; set; }
         private DataTable ArdData { get; set; }
         public List<ArdDataList> listArd { get; set; }

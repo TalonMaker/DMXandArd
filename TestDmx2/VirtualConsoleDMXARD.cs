@@ -14,6 +14,8 @@ using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using LibVLCSharp.Shared;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using AxWMPLib;
+using static System.Windows.Forms.DataFormats;
+using DMXandArd;
 namespace TestDmx2
 {
     public partial class DMXandARD : Form
@@ -34,19 +36,22 @@ namespace TestDmx2
         List<int> sliderValues;
         List<int> sliderValuesMaster;
         public SceneSaveDialog sceneSaveDialog { get; set; }
-        DMXARDproject ActiveProject;
+        public DMXARDproject ActiveProject;
         StreamWriter streamAutoSave;
         System.Timers.Timer timer;
         bool sceneLoad = false;
         String OldMessage = "";
-        DataSet ArdInfo=new DataSet();
-        DataSet MusicFilesInfo = new DataSet();
+        public DataSet ArdInfo=new DataSet();
+        public DataSet MusicFilesInfo = new DataSet();
         bool _isAlreadyPlaying;
         bool _loopPlaying;
+        //Panel holderOld;
         public DMXandARD()
         {
             InitializeComponent();
             string[] ports = SerialPort.GetPortNames();
+            //holderOld = new Panel();
+            //holderOld=MainPanel;
             foreach (string porter in portsDMX)
             {
 
@@ -172,10 +177,11 @@ namespace TestDmx2
             //string[] row = { PortNumber, IO, Triggered };
             //var listViewItem = new ListViewItem(row);
             //listView1.Items.Add(listViewItem);
-
+            ArdInfo.Tables[0].Rows.Clear();
             String[] tokens=config.Split('~');
             foreach (String token in tokens)
             {
+                
                 string[] items = token.Split(":");
                 if (token.CompareTo("CONFIG") != 0 && token.CompareTo("END") != 0 && token.CompareTo("") != 0)
                 {
@@ -186,6 +192,7 @@ namespace TestDmx2
                     NewRow[0] = items[0];
                     NewRow[1] = items[1];
                     NewRow[2] = 0;
+
                     ArdInfo.Tables[0].Rows.Add(NewRow);
                     ArdInfo.Tables[0].AcceptChanges();
                     ActiveProject.setArdTable(ArdInfo.Tables[0]);
@@ -546,6 +553,41 @@ namespace TestDmx2
             sceneLoad = false;
             autoSave(ActiveProject);
         }
+        public void bringUpSceneAndSet(String Scene)
+        {
+            if (ActiveProject.Scenes.ContainsKey(Scene))
+            {
+                sceneLoad = true;
+                dmxFixtures.DMXfixtureList = DMXandARDHelpers.Clone(ActiveProject.Scenes[Scene].DeepCopy().DMXfixtureList);
+                bringUpFixtureNoUI("All Fixtures",Scene);
+            }
+            ActiveProject.Scenes["(AutoSaveScene)"].DMXfixtureList = DMXandARDHelpers.Clone(dmxFixtures.DeepCopy().DMXfixtureList);
+            sceneLoad = false;
+            autoSave(ActiveProject);
+        }
+        private void bringUpFixtureNoUI(String SelectedFixture,String scene)
+        {
+            if (scene.CompareTo("") != 0)
+            {
+                sceneLoad = true;
+                dmxFixtures.DMXfixtureList = DMXandARDHelpers.Clone(ActiveProject.Scenes[scene].DeepCopy().DMXfixtureList);
+                int Fixtureindex = 1;
+                foreach (DMXfixture Fixture in ActiveProject.Scenes[scene].DMXfixtureList)
+                {
+                    if (SelectedFixture.CompareTo("All Fixtures") == 0)
+                    {
+                        for (int i = 0; i < DMX_MAX_CHANNELS; i++)
+                        {
+                            SetByte(((Fixtureindex - 1) * 16) + (i), Convert.ToByte(Fixture.Channels[i]));
+                        }
+                    }
+                    ++Fixtureindex;
+                }
+                sceneLoad = false;
+                ActiveProject.Scenes["(AutoSaveScene)"].DMXfixtureList = DMXandARDHelpers.Clone(dmxFixtures.DeepCopy().DMXfixtureList);
+                autoSave(ActiveProject);
+            }
+        }
         private void bringUpFixture(String SelectedFixture)
         {
             if (SceneSelection.Text.CompareTo("") != 0)
@@ -651,7 +693,7 @@ namespace TestDmx2
                 autoSave(ActiveProject);
             }
         }
-        private void Scene_ValueChanged(object sender, EventArgs e)
+        public void Scene_ValueChanged(object sender, EventArgs e)
         {
             sceneLoad = true;
             String SendScene = ((System.Windows.Forms.ComboBox)sender).Text;
@@ -945,6 +987,36 @@ namespace TestDmx2
                             streamAutoSave.Close();
                             return;
                         }
+                    break;
+                case "LaunchShowConfig":
+                    var dlgSave2 = new SaveFileDialog();
+                    dlgSave2.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
+                    if (dlgSave2.ShowDialog() != DialogResult.OK)
+                        return;
+                    String pathToProject = "";
+                    foreach (var path in dlgSave2.FileNames)
+                    {
+                        streamAutoSave = new StreamWriter(path, false);
+                        pathToProject = path;
+                        var options = new JsonSerializerOptions { WriteIndented = true };
+                        string jsonString = JsonSerializer.Serialize<DMXARDproject>(ActiveProject, options);
+                        streamAutoSave.WriteLine(jsonString);
+                        streamAutoSave.Close();
+                        //
+                        MainPanel.Hide();
+                        //dataGridMusic.DataSource = new DataTable();
+                        //dataGridARD.DataSource = new DataTable();
+                        ShowTriggers ShowTriggerForm = new ShowTriggers(this);
+                        ShowTriggerForm.TopLevel = false;
+                        ShowTriggerForm.FormBorderStyle = FormBorderStyle.None;
+                        SubPanel.Controls.Add(ShowTriggerForm);
+                        SubPanel.Enabled = true;
+                        SubPanel.Visible = true;
+                        ShowTriggerForm.Show();
+                        
+                        return;
+                    }
+
                     break;
             }
         }

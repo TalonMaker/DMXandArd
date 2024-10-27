@@ -142,6 +142,10 @@ namespace TestDmx2
             axWindowsMediaPlayer1 = new AxWindowsMediaPlayer();
             PlayMusic = new Button();
             AddMusic = new Button();
+            LaunchShowConfig = new Button();
+            SubPanel = new Panel();
+            MainPanel = new Panel();
+            
             ((System.ComponentModel.ISupportInitialize)PlayerWindow).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
@@ -167,6 +171,7 @@ namespace TestDmx2
             ((System.ComponentModel.ISupportInitialize)dataGridMusic).BeginInit();
             MusicGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).BeginInit();
+            MainPanel.SuspendLayout();
             SuspendLayout();
             // 
             // PlayerWindow
@@ -183,14 +188,14 @@ namespace TestDmx2
             // SerialDevices
             // 
             SerialDevices.FormattingEnabled = true;
-            SerialDevices.Location = new Point(12, 12);
+            SerialDevices.Location = new Point(254, 11);
             SerialDevices.Name = "SerialDevices";
             SerialDevices.Size = new Size(121, 23);
             SerialDevices.TabIndex = 0;
             // 
             // DMXConnectionButton
             // 
-            DMXConnectionButton.Location = new Point(139, 12);
+            DMXConnectionButton.Location = new Point(381, 11);
             DMXConnectionButton.Name = "DMXConnectionButton";
             DMXConnectionButton.Size = new Size(109, 23);
             DMXConnectionButton.TabIndex = 1;
@@ -202,22 +207,22 @@ namespace TestDmx2
             // 
             LogBox.FormattingEnabled = true;
             LogBox.ItemHeight = 15;
-            LogBox.Location = new Point(12, 740);
+            LogBox.Location = new Point(12, 776);
             LogBox.Name = "LogBox";
-            LogBox.Size = new Size(1142, 49);
+            LogBox.Size = new Size(1233, 49);
             LogBox.TabIndex = 2;
             // 
             // SerialDevicesDMX
             // 
             SerialDevicesDMX.FormattingEnabled = true;
-            SerialDevicesDMX.Location = new Point(21, 325);
+            SerialDevicesDMX.Location = new Point(12, 12);
             SerialDevicesDMX.Name = "SerialDevicesDMX";
             SerialDevicesDMX.Size = new Size(121, 23);
             SerialDevicesDMX.TabIndex = 3;
             // 
             // button1
             // 
-            button1.Location = new Point(148, 324);
+            button1.Location = new Point(139, 11);
             button1.Name = "button1";
             button1.Size = new Size(109, 23);
             button1.TabIndex = 4;
@@ -227,9 +232,9 @@ namespace TestDmx2
             // 
             // ProgressBarCycle
             // 
-            ProgressBarCycle.Location = new Point(12, 711);
+            ProgressBarCycle.Location = new Point(12, 756);
             ProgressBarCycle.Name = "ProgressBarCycle";
-            ProgressBarCycle.Size = new Size(1142, 23);
+            ProgressBarCycle.Size = new Size(1233, 23);
             ProgressBarCycle.TabIndex = 5;
             // 
             // trackBar1
@@ -439,7 +444,7 @@ namespace TestDmx2
             groupBox1.Controls.Add(fixtureButton2);
             groupBox1.Controls.Add(fixtureButton1);
             groupBox1.Enabled = false;
-            groupBox1.Location = new Point(2, 370);
+            groupBox1.Location = new Point(25, 403);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(331, 302);
             groupBox1.TabIndex = 23;
@@ -872,7 +877,7 @@ namespace TestDmx2
             groupBox2.Controls.Add(trackBar10);
             groupBox2.Controls.Add(trackBar9);
             groupBox2.Enabled = false;
-            groupBox2.Location = new Point(339, 370);
+            groupBox2.Location = new Point(380, 366);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(841, 335);
             groupBox2.TabIndex = 24;
@@ -1215,7 +1220,7 @@ namespace TestDmx2
             groupBox3.Controls.Add(SceneSelection);
             groupBox3.Controls.Add(SaveNewScene);
             groupBox3.Enabled = false;
-            groupBox3.Location = new Point(499, 280);
+            groupBox3.Location = new Point(566, 272);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(655, 84);
             groupBox3.TabIndex = 26;
@@ -1264,7 +1269,7 @@ namespace TestDmx2
             // 
             // buttonLoadConfig
             // 
-            buttonLoadConfig.Location = new Point(906, 12);
+            buttonLoadConfig.Location = new Point(988, 12);
             buttonLoadConfig.Name = "buttonLoadConfig";
             buttonLoadConfig.Size = new Size(97, 23);
             buttonLoadConfig.TabIndex = 27;
@@ -1274,7 +1279,7 @@ namespace TestDmx2
             // 
             // buttonSaveConfig
             // 
-            buttonSaveConfig.Location = new Point(1009, 12);
+            buttonSaveConfig.Location = new Point(1091, 12);
             buttonSaveConfig.Name = "buttonSaveConfig";
             buttonSaveConfig.Size = new Size(145, 23);
             buttonSaveConfig.TabIndex = 28;
@@ -1286,7 +1291,7 @@ namespace TestDmx2
             // 
             groupBox4.Controls.Add(FixtureComboBox);
             groupBox4.Enabled = false;
-            groupBox4.Location = new Point(313, 280);
+            groupBox4.Location = new Point(380, 272);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(180, 84);
             groupBox4.TabIndex = 29;
@@ -1307,9 +1312,9 @@ namespace TestDmx2
             // 
             Messages.FormattingEnabled = true;
             Messages.ItemHeight = 15;
-            Messages.Location = new Point(313, 225);
+            Messages.Location = new Point(380, 217);
             Messages.Name = "Messages";
-            Messages.Size = new Size(841, 49);
+            Messages.Size = new Size(834, 49);
             Messages.TabIndex = 30;
             // 
             // dataGridARD
@@ -1318,10 +1323,10 @@ namespace TestDmx2
             dataGridARD.AllowUserToDeleteRows = false;
             dataGridARD.AllowUserToOrderColumns = true;
             dataGridARD.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridARD.Location = new Point(2, 46);
+            dataGridARD.Location = new Point(6, 3);
             dataGridARD.Name = "dataGridARD";
             dataGridARD.ReadOnly = true;
-            dataGridARD.Size = new Size(305, 263);
+            dataGridARD.Size = new Size(368, 371);
             dataGridARD.TabIndex = 31;
             // 
             // dataGridMusic
@@ -1344,9 +1349,9 @@ namespace TestDmx2
             MusicGroup.Controls.Add(PlayMusic);
             MusicGroup.Controls.Add(AddMusic);
             MusicGroup.Controls.Add(dataGridMusic);
-            MusicGroup.Location = new Point(313, 46);
+            MusicGroup.Location = new Point(380, 3);
             MusicGroup.Name = "MusicGroup";
-            MusicGroup.Size = new Size(841, 173);
+            MusicGroup.Size = new Size(841, 208);
             MusicGroup.TabIndex = 32;
             MusicGroup.TabStop = false;
             MusicGroup.Text = "Music";
@@ -1380,26 +1385,56 @@ namespace TestDmx2
             AddMusic.UseVisualStyleBackColor = true;
             AddMusic.Click += MusicButton_Click;
             // 
+            // LaunchShowConfig
+            // 
+            LaunchShowConfig.Location = new Point(654, 12);
+            LaunchShowConfig.Name = "LaunchShowConfig";
+            LaunchShowConfig.Size = new Size(328, 23);
+            LaunchShowConfig.TabIndex = 33;
+            LaunchShowConfig.Text = "Launch Show Config";
+            LaunchShowConfig.UseVisualStyleBackColor = true;
+            LaunchShowConfig.Click += LoadSave_Click;
+            // 
+            // SubPanel
+            // 
+            SubPanel.Enabled = false;
+            SubPanel.Location = new Point(12, 35);
+            SubPanel.Name = "SubPanel";
+            SubPanel.Size = new Size(1233, 715);
+            SubPanel.TabIndex = 2;
+            SubPanel.Visible = false;
+            // 
+            // MainPanel
+            // 
+            MainPanel.Controls.Add(dataGridARD);
+            MainPanel.Controls.Add(Messages);
+            MainPanel.Controls.Add(MusicGroup);
+            MainPanel.Controls.Add(groupBox4);
+            MainPanel.Controls.Add(groupBox3);
+            MainPanel.Controls.Add(groupBox2);
+            MainPanel.Controls.Add(groupBox1);
+            MainPanel.Location = new Point(12, 41);
+            MainPanel.Name = "MainPanel";
+            MainPanel.Size = new Size(1233, 709);
+            MainPanel.TabIndex = 34;
+            
+            // 
             // DMXandARD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1166, 801);
-            Controls.Add(MusicGroup);
-            Controls.Add(dataGridARD);
-            Controls.Add(Messages);
-            Controls.Add(groupBox4);
+            ClientSize = new Size(1253, 833);
+            Controls.Add(SubPanel);
+            Controls.Add(MainPanel);
+            Controls.Add(SerialDevicesDMX);
+            Controls.Add(LaunchShowConfig);
             Controls.Add(buttonSaveConfig);
             Controls.Add(buttonLoadConfig);
-            Controls.Add(groupBox3);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            Controls.Add(ProgressBarCycle);
             Controls.Add(button1);
-            Controls.Add(SerialDevicesDMX);
+            Controls.Add(ProgressBarCycle);
             Controls.Add(LogBox);
-            Controls.Add(DMXConnectionButton);
             Controls.Add(SerialDevices);
+            Controls.Add(DMXConnectionButton);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "DMXandARD";
@@ -1431,6 +1466,7 @@ namespace TestDmx2
             ((System.ComponentModel.ISupportInitialize)dataGridMusic).EndInit();
             MusicGroup.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
+            MainPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1545,6 +1581,9 @@ namespace TestDmx2
         private System.Windows.Forms.Button AddMusic;
         private Button PlayMusic;
         private AxWindowsMediaPlayer axWindowsMediaPlayer1;
+        private Button LaunchShowConfig;
+        private Panel MainPanel;
+        private Panel SubPanel;
     }
 }
 
