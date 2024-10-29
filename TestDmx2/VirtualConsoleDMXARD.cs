@@ -28,8 +28,8 @@ namespace TestDmx2
         bool runThreadArd = false;
         string[] portsDMX = SerialPort.GetPortNames();
         string[] portsARD = SerialPort.GetPortNames();
-        SerialPort COMPORT;
-        SerialPort ARDCOMPORT;
+        public SerialPort COMPORT;
+        public SerialPort ARDCOMPORT;
         DMXFixtures dmxFixtures;
         const int DMX_MAX_FIXTURES=32;
         const int DMX_MAX_CHANNELS = 16;
@@ -333,7 +333,7 @@ namespace TestDmx2
                 PlayerWindow.SendToBack();
             }
         }
-        private void ARDConnectionButton_Click(object sender, EventArgs e)
+        public void initiateArdConnection()
         {
             if (SerialDevices.Text.CompareTo("") != 0)
             {
@@ -364,6 +364,10 @@ namespace TestDmx2
             {
                 Messages.Items.Add("Please Select port");
             }
+        }
+        private void ARDConnectionButton_Click(object sender, EventArgs e)
+        {
+            initiateArdConnection();
         }
         void sendDmxDataSerial()
         {
@@ -436,8 +440,7 @@ namespace TestDmx2
                 }
             }
         }
-
-        private void DMXConnection_Click(object sender, EventArgs e)
+        public void initiateDmxConnection()
         {
             if (InfoSendDmx != null)
             {
@@ -468,6 +471,10 @@ namespace TestDmx2
             groupBox3.Enabled = true;
             groupBox4.Enabled = true;
             SerialDevicesDMX.Enabled = false;
+        }
+        private void DMXConnection_Click(object sender, EventArgs e)
+        {
+            initiateDmxConnection();
         }
         public void SetByte(int index, byte value)
         {
@@ -991,17 +998,8 @@ namespace TestDmx2
                 case "LaunchShowConfig":
                     var dlgSave2 = new SaveFileDialog();
                     dlgSave2.Filter = "Json Files (*.json)|*.json|All Files (*.*)|*.*";
-                    if (dlgSave2.ShowDialog() != DialogResult.OK)
-                        return;
-                    String pathToProject = "";
-                    foreach (var path in dlgSave2.FileNames)
-                    {
-                        streamAutoSave = new StreamWriter(path, false);
-                        pathToProject = path;
-                        var options = new JsonSerializerOptions { WriteIndented = true };
-                        string jsonString = JsonSerializer.Serialize<DMXARDproject>(ActiveProject, options);
-                        streamAutoSave.WriteLine(jsonString);
-                        streamAutoSave.Close();
+                   
+                   
                         //
                         MainPanel.Hide();
                         //dataGridMusic.DataSource = new DataTable();
@@ -1014,8 +1012,7 @@ namespace TestDmx2
                         SubPanel.Visible = true;
                         ShowTriggerForm.Show();
                         
-                        return;
-                    }
+
 
                     break;
             }

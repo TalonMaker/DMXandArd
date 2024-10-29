@@ -32,54 +32,65 @@
             treeViewShow = new System.Windows.Forms.TreeView();
             buttonRunShow = new System.Windows.Forms.Button();
             groupBoxMusic = new System.Windows.Forms.GroupBox();
+            addSoundOnly = new System.Windows.Forms.Button();
+            setEndMarker = new System.Windows.Forms.Button();
+            setStartMarker = new System.Windows.Forms.Button();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            groupBox4 = new System.Windows.Forms.GroupBox();
+            textBoxEndSoundAt = new System.Windows.Forms.TextBox();
+            groupBox3 = new System.Windows.Forms.GroupBox();
+            textBoxStartSoundAt = new System.Windows.Forms.TextBox();
             addSelectedSoundtoSelectedTrigger = new System.Windows.Forms.Button();
             buttonPlaySample = new System.Windows.Forms.Button();
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             dataGridMusic = new System.Windows.Forms.DataGridView();
             buttonAddSelectedtoScene = new System.Windows.Forms.Button();
             groupBoxSceneSelector = new System.Windows.Forms.GroupBox();
+            groupBox6 = new System.Windows.Forms.GroupBox();
+            textBoxRunTime = new System.Windows.Forms.TextBox();
+            trackBarRunTime = new System.Windows.Forms.TrackBar();
             addsceneToQueue = new System.Windows.Forms.Button();
             ShowSceneButton = new System.Windows.Forms.Button();
             comboBoxScene = new System.Windows.Forms.ComboBox();
             buttonRunFromSelected = new System.Windows.Forms.Button();
             buttonStopShow = new System.Windows.Forms.Button();
             groupBoxTreeControls = new System.Windows.Forms.GroupBox();
+            buttonAddNewEvent = new System.Windows.Forms.Button();
             buttonEditTrigger = new System.Windows.Forms.Button();
             groupBoxArd = new System.Windows.Forms.GroupBox();
+            groupBox5 = new System.Windows.Forms.GroupBox();
+            comboBoxTriggerAtArd = new System.Windows.Forms.ComboBox();
             groupBox1 = new System.Windows.Forms.GroupBox();
             comboBoxArdTriggerValue = new System.Windows.Forms.ComboBox();
             addArdtoSelectedTrigger = new System.Windows.Forms.Button();
             dataGridARD = new System.Windows.Forms.DataGridView();
             buttonMoveTriggerDown = new System.Windows.Forms.Button();
             buttonMoveTriggerUp = new System.Windows.Forms.Button();
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            setStartMarker = new System.Windows.Forms.Button();
-            setEndMarker = new System.Windows.Forms.Button();
-            addSoundOnly = new System.Windows.Forms.Button();
-            groupBox3 = new System.Windows.Forms.GroupBox();
-            groupBox4 = new System.Windows.Forms.GroupBox();
-            textBoxStartSoundAt = new System.Windows.Forms.TextBox();
-            textBoxEndSoundAt = new System.Windows.Forms.TextBox();
             groupBoxMusic.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox4.SuspendLayout();
+            groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridMusic).BeginInit();
             groupBoxSceneSelector.SuspendLayout();
+            groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarRunTime).BeginInit();
             groupBoxTreeControls.SuspendLayout();
             groupBoxArd.SuspendLayout();
+            groupBox5.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridARD).BeginInit();
-            groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // treeViewShow
             // 
             treeViewShow.FullRowSelect = true;
+            treeViewShow.HideSelection = false;
             treeViewShow.Location = new System.Drawing.Point(601, 114);
             treeViewShow.Name = "treeViewShow";
             treeViewShow.Size = new System.Drawing.Size(536, 503);
             treeViewShow.TabIndex = 0;
+            treeViewShow.AfterSelect += treeViewShow_Click;
             // 
             // buttonRunShow
             // 
@@ -100,25 +111,103 @@
             groupBoxMusic.Controls.Add(buttonPlaySample);
             groupBoxMusic.Controls.Add(axWindowsMediaPlayer1);
             groupBoxMusic.Controls.Add(dataGridMusic);
-            groupBoxMusic.Location = new System.Drawing.Point(13, 80);
+            groupBoxMusic.Location = new System.Drawing.Point(13, 128);
             groupBoxMusic.Name = "groupBoxMusic";
-            groupBoxMusic.Size = new System.Drawing.Size(582, 317);
+            groupBoxMusic.Size = new System.Drawing.Size(582, 269);
             groupBoxMusic.TabIndex = 2;
             groupBoxMusic.TabStop = false;
             groupBoxMusic.Text = "Music";
             // 
+            // addSoundOnly
+            // 
+            addSoundOnly.Location = new System.Drawing.Point(429, 125);
+            addSoundOnly.Name = "addSoundOnly";
+            addSoundOnly.Size = new System.Drawing.Size(148, 45);
+            addSoundOnly.TabIndex = 9;
+            addSoundOnly.Text = "Add as Sound No Trigger";
+            addSoundOnly.UseVisualStyleBackColor = true;
+            addSoundOnly.Click += addSoundOnly_Click;
+            // 
+            // setEndMarker
+            // 
+            setEndMarker.Location = new System.Drawing.Point(120, 198);
+            setEndMarker.Name = "setEndMarker";
+            setEndMarker.Size = new System.Drawing.Size(112, 40);
+            setEndMarker.TabIndex = 8;
+            setEndMarker.Text = "Set End Sound Time";
+            setEndMarker.UseVisualStyleBackColor = true;
+            setEndMarker.Click += setEndMarker_Click;
+            // 
+            // setStartMarker
+            // 
+            setStartMarker.Location = new System.Drawing.Point(7, 198);
+            setStartMarker.Name = "setStartMarker";
+            setStartMarker.Size = new System.Drawing.Size(107, 40);
+            setStartMarker.TabIndex = 7;
+            setStartMarker.Text = "Set Start Sound Time";
+            setStartMarker.UseVisualStyleBackColor = true;
+            setStartMarker.Click += setStartMarker_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(groupBox4);
+            groupBox2.Controls.Add(groupBox3);
+            groupBox2.Location = new System.Drawing.Point(238, 116);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(185, 150);
+            groupBox2.TabIndex = 6;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Sound Info";
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(textBoxEndSoundAt);
+            groupBox4.Location = new System.Drawing.Point(6, 89);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new System.Drawing.Size(174, 51);
+            groupBox4.TabIndex = 1;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "End";
+            // 
+            // textBoxEndSoundAt
+            // 
+            textBoxEndSoundAt.Location = new System.Drawing.Point(5, 20);
+            textBoxEndSoundAt.Name = "textBoxEndSoundAt";
+            textBoxEndSoundAt.ReadOnly = true;
+            textBoxEndSoundAt.Size = new System.Drawing.Size(118, 23);
+            textBoxEndSoundAt.TabIndex = 1;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(textBoxStartSoundAt);
+            groupBox3.Location = new System.Drawing.Point(5, 22);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new System.Drawing.Size(174, 58);
+            groupBox3.TabIndex = 0;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Start";
+            // 
+            // textBoxStartSoundAt
+            // 
+            textBoxStartSoundAt.Location = new System.Drawing.Point(6, 22);
+            textBoxStartSoundAt.Name = "textBoxStartSoundAt";
+            textBoxStartSoundAt.ReadOnly = true;
+            textBoxStartSoundAt.Size = new System.Drawing.Size(118, 23);
+            textBoxStartSoundAt.TabIndex = 0;
+            // 
             // addSelectedSoundtoSelectedTrigger
             // 
-            addSelectedSoundtoSelectedTrigger.Location = new System.Drawing.Point(428, 225);
+            addSelectedSoundtoSelectedTrigger.Location = new System.Drawing.Point(429, 193);
             addSelectedSoundtoSelectedTrigger.Name = "addSelectedSoundtoSelectedTrigger";
             addSelectedSoundtoSelectedTrigger.Size = new System.Drawing.Size(148, 45);
             addSelectedSoundtoSelectedTrigger.TabIndex = 5;
             addSelectedSoundtoSelectedTrigger.Text = "Add Sound to Selected Trigger";
             addSelectedSoundtoSelectedTrigger.UseVisualStyleBackColor = true;
+            addSelectedSoundtoSelectedTrigger.Click += addSelectedSoundtoSelectedTrigger_Click;
             // 
             // buttonPlaySample
             // 
-            buttonPlaySample.Location = new System.Drawing.Point(6, 148);
+            buttonPlaySample.Location = new System.Drawing.Point(7, 116);
             buttonPlaySample.Name = "buttonPlaySample";
             buttonPlaySample.Size = new System.Drawing.Size(225, 29);
             buttonPlaySample.TabIndex = 2;
@@ -129,7 +218,7 @@
             // axWindowsMediaPlayer1
             // 
             axWindowsMediaPlayer1.Enabled = true;
-            axWindowsMediaPlayer1.Location = new System.Drawing.Point(6, 183);
+            axWindowsMediaPlayer1.Location = new System.Drawing.Point(7, 151);
             axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             axWindowsMediaPlayer1.OcxState = (System.Windows.Forms.AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new System.Drawing.Size(225, 45);
@@ -140,15 +229,17 @@
             dataGridMusic.AllowUserToAddRows = false;
             dataGridMusic.AllowUserToDeleteRows = false;
             dataGridMusic.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridMusic.Location = new System.Drawing.Point(6, 14);
+            dataGridMusic.Location = new System.Drawing.Point(6, 22);
+            dataGridMusic.MultiSelect = false;
             dataGridMusic.Name = "dataGridMusic";
             dataGridMusic.ReadOnly = true;
             dataGridMusic.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dataGridMusic.ShowCellErrors = false;
             dataGridMusic.ShowEditingIcon = false;
             dataGridMusic.ShowRowErrors = false;
-            dataGridMusic.Size = new System.Drawing.Size(565, 128);
+            dataGridMusic.Size = new System.Drawing.Size(565, 88);
             dataGridMusic.TabIndex = 0;
+            dataGridMusic.SelectionChanged += dataGridMusic_SelectionChanged;
             // 
             // buttonAddSelectedtoScene
             // 
@@ -161,29 +252,59 @@
             // 
             // groupBoxSceneSelector
             // 
+            groupBoxSceneSelector.Controls.Add(groupBox6);
             groupBoxSceneSelector.Controls.Add(addsceneToQueue);
             groupBoxSceneSelector.Controls.Add(ShowSceneButton);
             groupBoxSceneSelector.Controls.Add(comboBoxScene);
-            groupBoxSceneSelector.Location = new System.Drawing.Point(12, 8);
+            groupBoxSceneSelector.Location = new System.Drawing.Point(11, 17);
             groupBoxSceneSelector.Name = "groupBoxSceneSelector";
-            groupBoxSceneSelector.Size = new System.Drawing.Size(583, 66);
+            groupBoxSceneSelector.Size = new System.Drawing.Size(583, 112);
             groupBoxSceneSelector.TabIndex = 3;
             groupBoxSceneSelector.TabStop = false;
             groupBoxSceneSelector.Text = "Scene Selector";
             // 
+            // groupBox6
+            // 
+            groupBox6.Controls.Add(textBoxRunTime);
+            groupBox6.Controls.Add(trackBarRunTime);
+            groupBox6.Location = new System.Drawing.Point(6, 47);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new System.Drawing.Size(571, 59);
+            groupBox6.TabIndex = 5;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "Runtime Scene";
+            // 
+            // textBoxRunTime
+            // 
+            textBoxRunTime.Location = new System.Drawing.Point(491, 21);
+            textBoxRunTime.Name = "textBoxRunTime";
+            textBoxRunTime.ReadOnly = true;
+            textBoxRunTime.Size = new System.Drawing.Size(74, 23);
+            textBoxRunTime.TabIndex = 1;
+            textBoxRunTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // trackBarRunTime
+            // 
+            trackBarRunTime.Location = new System.Drawing.Point(3, 14);
+            trackBarRunTime.Maximum = 300;
+            trackBarRunTime.Name = "trackBarRunTime";
+            trackBarRunTime.Size = new System.Drawing.Size(482, 45);
+            trackBarRunTime.TabIndex = 0;
+            trackBarRunTime.ValueChanged += trackBarRunTime_ValueChanged;
+            // 
             // addsceneToQueue
             // 
-            addsceneToQueue.Location = new System.Drawing.Point(373, 21);
+            addsceneToQueue.Location = new System.Drawing.Point(429, 18);
             addsceneToQueue.Name = "addsceneToQueue";
             addsceneToQueue.Size = new System.Drawing.Size(148, 24);
             addsceneToQueue.TabIndex = 4;
-            addsceneToQueue.Text = "Add selected to Queue";
+            addsceneToQueue.Text = "Add selected to Event";
             addsceneToQueue.UseVisualStyleBackColor = true;
             addsceneToQueue.Click += addsceneToQueue_Click;
             // 
             // ShowSceneButton
             // 
-            ShowSceneButton.Location = new System.Drawing.Point(260, 21);
+            ShowSceneButton.Location = new System.Drawing.Point(260, 18);
             ShowSceneButton.Name = "ShowSceneButton";
             ShowSceneButton.Size = new System.Drawing.Size(107, 23);
             ShowSceneButton.TabIndex = 1;
@@ -194,10 +315,11 @@
             // comboBoxScene
             // 
             comboBoxScene.FormattingEnabled = true;
-            comboBoxScene.Location = new System.Drawing.Point(6, 22);
+            comboBoxScene.Location = new System.Drawing.Point(6, 18);
             comboBoxScene.Name = "comboBoxScene";
             comboBoxScene.Size = new System.Drawing.Size(248, 23);
             comboBoxScene.TabIndex = 0;
+            comboBoxScene.SelectedValueChanged += comboBoxScene_SelectedValueChanged;
             // 
             // buttonRunFromSelected
             // 
@@ -220,6 +342,7 @@
             // 
             // groupBoxTreeControls
             // 
+            groupBoxTreeControls.Controls.Add(buttonAddNewEvent);
             groupBoxTreeControls.Controls.Add(buttonEditTrigger);
             groupBoxTreeControls.Controls.Add(buttonAddSelectedtoScene);
             groupBoxTreeControls.Location = new System.Drawing.Point(601, 17);
@@ -228,6 +351,16 @@
             groupBoxTreeControls.TabIndex = 6;
             groupBoxTreeControls.TabStop = false;
             groupBoxTreeControls.Text = "Show Tree Controls";
+            // 
+            // buttonAddNewEvent
+            // 
+            buttonAddNewEvent.Location = new System.Drawing.Point(6, 22);
+            buttonAddNewEvent.Name = "buttonAddNewEvent";
+            buttonAddNewEvent.Size = new System.Drawing.Size(148, 55);
+            buttonAddNewEvent.TabIndex = 5;
+            buttonAddNewEvent.Text = "Add New Event";
+            buttonAddNewEvent.UseVisualStyleBackColor = true;
+            buttonAddNewEvent.Click += buttonAddNewEvent_Click;
             // 
             // buttonEditTrigger
             // 
@@ -240,6 +373,7 @@
             // 
             // groupBoxArd
             // 
+            groupBoxArd.Controls.Add(groupBox5);
             groupBoxArd.Controls.Add(groupBox1);
             groupBoxArd.Controls.Add(addArdtoSelectedTrigger);
             groupBoxArd.Controls.Add(dataGridARD);
@@ -250,12 +384,31 @@
             groupBoxArd.TabStop = false;
             groupBoxArd.Text = "ArdruinoControls";
             // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(comboBoxTriggerAtArd);
+            groupBox5.Location = new System.Drawing.Point(190, 159);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new System.Drawing.Size(113, 49);
+            groupBox5.TabIndex = 9;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Ard Trigger At";
+            // 
+            // comboBoxTriggerAtArd
+            // 
+            comboBoxTriggerAtArd.FormattingEnabled = true;
+            comboBoxTriggerAtArd.Items.AddRange(new object[] { "Start", "End" });
+            comboBoxTriggerAtArd.Location = new System.Drawing.Point(6, 20);
+            comboBoxTriggerAtArd.Name = "comboBoxTriggerAtArd";
+            comboBoxTriggerAtArd.Size = new System.Drawing.Size(96, 23);
+            comboBoxTriggerAtArd.TabIndex = 7;
+            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(comboBoxArdTriggerValue);
-            groupBox1.Location = new System.Drawing.Point(310, 159);
+            groupBox1.Location = new System.Drawing.Point(309, 159);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(112, 49);
+            groupBox1.Size = new System.Drawing.Size(113, 49);
             groupBox1.TabIndex = 8;
             groupBox1.TabStop = false;
             groupBox1.Text = "Ard Trigger Value";
@@ -277,6 +430,7 @@
             addArdtoSelectedTrigger.TabIndex = 6;
             addArdtoSelectedTrigger.Text = "Add to Selected Trigger";
             addArdtoSelectedTrigger.UseVisualStyleBackColor = true;
+            addArdtoSelectedTrigger.Click += addArdtoSelectedTrigger_Click;
             // 
             // dataGridARD
             // 
@@ -284,6 +438,7 @@
             dataGridARD.AllowUserToDeleteRows = false;
             dataGridARD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridARD.Location = new System.Drawing.Point(5, 15);
+            dataGridARD.MultiSelect = false;
             dataGridARD.Name = "dataGridARD";
             dataGridARD.ReadOnly = true;
             dataGridARD.Size = new System.Drawing.Size(560, 138);
@@ -307,80 +462,6 @@
             buttonMoveTriggerUp.Text = "Move Trigger Up";
             buttonMoveTriggerUp.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(groupBox4);
-            groupBox2.Controls.Add(groupBox3);
-            groupBox2.Location = new System.Drawing.Point(237, 148);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(185, 163);
-            groupBox2.TabIndex = 6;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Sound Info";
-            // 
-            // setStartMarker
-            // 
-            setStartMarker.Location = new System.Drawing.Point(6, 230);
-            setStartMarker.Name = "setStartMarker";
-            setStartMarker.Size = new System.Drawing.Size(107, 40);
-            setStartMarker.TabIndex = 7;
-            setStartMarker.Text = "Set Start Sound Time";
-            setStartMarker.UseVisualStyleBackColor = true;
-            // 
-            // setEndMarker
-            // 
-            setEndMarker.Location = new System.Drawing.Point(119, 230);
-            setEndMarker.Name = "setEndMarker";
-            setEndMarker.Size = new System.Drawing.Size(112, 40);
-            setEndMarker.TabIndex = 8;
-            setEndMarker.Text = "Set End Sound Time";
-            setEndMarker.UseVisualStyleBackColor = true;
-            // 
-            // addSoundOnly
-            // 
-            addSoundOnly.Location = new System.Drawing.Point(428, 157);
-            addSoundOnly.Name = "addSoundOnly";
-            addSoundOnly.Size = new System.Drawing.Size(148, 45);
-            addSoundOnly.TabIndex = 9;
-            addSoundOnly.Text = "Add as Sound No Trigger";
-            addSoundOnly.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(textBoxStartSoundAt);
-            groupBox3.Location = new System.Drawing.Point(5, 22);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(174, 58);
-            groupBox3.TabIndex = 0;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Start";
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(textBoxEndSoundAt);
-            groupBox4.Location = new System.Drawing.Point(6, 89);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new System.Drawing.Size(174, 51);
-            groupBox4.TabIndex = 1;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "End";
-            // 
-            // textBoxStartSoundAt
-            // 
-            textBoxStartSoundAt.Location = new System.Drawing.Point(6, 22);
-            textBoxStartSoundAt.Name = "textBoxStartSoundAt";
-            textBoxStartSoundAt.ReadOnly = true;
-            textBoxStartSoundAt.Size = new System.Drawing.Size(118, 23);
-            textBoxStartSoundAt.TabIndex = 0;
-            // 
-            // textBoxEndSoundAt
-            // 
-            textBoxEndSoundAt.Location = new System.Drawing.Point(5, 20);
-            textBoxEndSoundAt.Name = "textBoxEndSoundAt";
-            textBoxEndSoundAt.ReadOnly = true;
-            textBoxEndSoundAt.Size = new System.Drawing.Size(118, 23);
-            textBoxEndSoundAt.TabIndex = 1;
-            // 
             // ShowTriggers
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -403,18 +484,22 @@
             Name = "ShowTriggers";
             Text = "ShowTriggers";
             groupBoxMusic.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridMusic).EndInit();
             groupBoxSceneSelector.ResumeLayout(false);
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarRunTime).EndInit();
             groupBoxTreeControls.ResumeLayout(false);
             groupBoxArd.ResumeLayout(false);
+            groupBox5.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridARD).EndInit();
-            groupBox2.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -451,5 +536,11 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxEndSoundAt;
         private System.Windows.Forms.TextBox textBoxStartSoundAt;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ComboBox comboBoxTriggerAtArd;
+        private System.Windows.Forms.Button buttonAddNewEvent;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TrackBar trackBarRunTime;
+        private System.Windows.Forms.TextBox textBoxRunTime;
     }
 }

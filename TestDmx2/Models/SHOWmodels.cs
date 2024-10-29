@@ -25,7 +25,7 @@ namespace DMXandArd.Models
             listModules.Add(new modulesDef { name = "End Triggers", tag = "endTriggers" });
             listModules.Add(new modulesDef { name = "Sounds", tag = "sounds" });
             listModules.Add(new modulesDef { name = "Scenes", tag = "scenes" });
-            listModules.Add(new modulesDef { name = "Next Scene", tag = "nextScene" });
+            listModules.Add(new modulesDef { name = "Next Event", tag = "nextEvent" });
         }
         public int ID { get; set; }
         public string name { get; set; }
@@ -36,16 +36,45 @@ namespace DMXandArd.Models
         public showScenes nextScene { get; set; }
         public TreeNode treeNodeEvents { get; set; }
         public List<modulesDef> listModules {  get; set; }
+        public void addEventToTreeNode(string nodeID, string value)
+        {
+            //int indexNode = treeNodeEvents.Nodes[name].Nodes.IndexOfKey(nodeID);
+            //if(indexNode >= 0)
+            //{
+                TreeNode tempNode= new TreeNode();
+                tempNode.Tag = value;
+                tempNode.Text = value;
+                tempNode.Name=value;
+            TreeNode test = treeNodeEvents;
+                //Console.WriteLine(treeNodeEvents, tempNode);
+                treeNodeEvents.Nodes[nodeID].Nodes.Add(tempNode);
+            //}
+        }
+        public void removeEventToTreeNode(string nodeID, string value)
+        {
+            int indexNode = treeNodeEvents.Nodes.IndexOfKey(nodeID);
+            if (indexNode >= 0)
+            {
+                TreeNode tempNode = new TreeNode();
+                tempNode.Tag = value;
+                tempNode.Text = value;
+                tempNode.Name=value;
+                treeNodeEvents.Nodes[indexNode].Nodes.Remove(tempNode);
+            }
+        }
         public TreeNode createTreeNew(string Name)
         {
             treeNodeEvents=new TreeNode();
             treeNodeEvents.Text=Name;
+            treeNodeEvents.Name=Name;
             name = Name;
             foreach (modulesDef module in listModules)
             {
                 TreeNode childNodeBase = new TreeNode();
                 childNodeBase.Text=module.name;
                 childNodeBase.Tag = module.tag;
+                childNodeBase.Name=module.name;
+               
                 treeNodeEvents.Nodes.Add(childNodeBase);
             }
             return treeNodeEvents;
