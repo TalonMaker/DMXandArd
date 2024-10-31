@@ -568,6 +568,14 @@ namespace TestDmx2
                 dmxFixtures.DMXfixtureList = DMXandARDHelpers.Clone(ActiveProject.Scenes[Scene].DeepCopy().DMXfixtureList);
                 bringUpFixtureNoUI("All Fixtures",Scene);
             }
+            else
+            {
+                int Fixtureindex = 1;
+                for (int i = 0; i < DMX_MAX_CHANNELS; i++)
+                {
+                    SetByte(((Fixtureindex - 1) * 16) + (i), Convert.ToByte(0));
+                }
+            }
             ActiveProject.Scenes["(AutoSaveScene)"].DMXfixtureList = DMXandARDHelpers.Clone(dmxFixtures.DeepCopy().DMXfixtureList);
             sceneLoad = false;
             autoSave(ActiveProject);
@@ -977,7 +985,8 @@ namespace TestDmx2
                         dataGridMusic.DataMember = "MusicConfig";
                         dataGridMusic.Refresh();
                         bringUpScene("(AutoSaveScene)");
-                            return;
+                        sr.Close();
+                        return;
                         }
                     break;
                 case "buttonSaveConfig":

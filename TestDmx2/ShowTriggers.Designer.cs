@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowTriggers));
             treeViewShow = new System.Windows.Forms.TreeView();
             buttonRunShow = new System.Windows.Forms.Button();
@@ -44,7 +45,7 @@
             buttonPlaySample = new System.Windows.Forms.Button();
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             dataGridMusic = new System.Windows.Forms.DataGridView();
-            buttonAddSelectedtoScene = new System.Windows.Forms.Button();
+            buttonAddToNext = new System.Windows.Forms.Button();
             groupBoxSceneSelector = new System.Windows.Forms.GroupBox();
             groupBox6 = new System.Windows.Forms.GroupBox();
             textBoxRunTime = new System.Windows.Forms.TextBox();
@@ -55,8 +56,10 @@
             buttonRunFromSelected = new System.Windows.Forms.Button();
             buttonStopShow = new System.Windows.Forms.Button();
             groupBoxTreeControls = new System.Windows.Forms.GroupBox();
+            groupBox7 = new System.Windows.Forms.GroupBox();
+            comboBoxEventsAddtoEvent = new System.Windows.Forms.ComboBox();
+            buttonAddAsInterupt = new System.Windows.Forms.Button();
             buttonAddNewEvent = new System.Windows.Forms.Button();
-            buttonEditTrigger = new System.Windows.Forms.Button();
             groupBoxArd = new System.Windows.Forms.GroupBox();
             groupBox5 = new System.Windows.Forms.GroupBox();
             comboBoxTriggerAtArd = new System.Windows.Forms.ComboBox();
@@ -64,8 +67,13 @@
             comboBoxArdTriggerValue = new System.Windows.Forms.ComboBox();
             addArdtoSelectedTrigger = new System.Windows.Forms.Button();
             dataGridARD = new System.Windows.Forms.DataGridView();
-            buttonMoveTriggerDown = new System.Windows.Forms.Button();
-            buttonMoveTriggerUp = new System.Windows.Forms.Button();
+            buttonMoveEventDown = new System.Windows.Forms.Button();
+            buttonMoveEventUp = new System.Windows.Forms.Button();
+            buttonSaveShow = new System.Windows.Forms.Button();
+            buttonLoadShow = new System.Windows.Forms.Button();
+            timerShow = new System.Windows.Forms.Timer(components);
+            timerPlayMediaEnd = new System.Windows.Forms.Timer(components);
+            timerScene = new System.Windows.Forms.Timer(components);
             groupBoxMusic.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -76,6 +84,7 @@
             groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarRunTime).BeginInit();
             groupBoxTreeControls.SuspendLayout();
+            groupBox7.SuspendLayout();
             groupBoxArd.SuspendLayout();
             groupBox5.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -86,20 +95,21 @@
             // 
             treeViewShow.FullRowSelect = true;
             treeViewShow.HideSelection = false;
-            treeViewShow.Location = new System.Drawing.Point(601, 114);
+            treeViewShow.Location = new System.Drawing.Point(601, 150);
             treeViewShow.Name = "treeViewShow";
-            treeViewShow.Size = new System.Drawing.Size(536, 503);
+            treeViewShow.Size = new System.Drawing.Size(536, 467);
             treeViewShow.TabIndex = 0;
             treeViewShow.AfterSelect += treeViewShow_Click;
             // 
             // buttonRunShow
             // 
-            buttonRunShow.Location = new System.Drawing.Point(790, 623);
+            buttonRunShow.Location = new System.Drawing.Point(720, 623);
             buttonRunShow.Name = "buttonRunShow";
             buttonRunShow.Size = new System.Drawing.Size(187, 43);
             buttonRunShow.TabIndex = 1;
             buttonRunShow.Text = "Run Entire Show";
             buttonRunShow.UseVisualStyleBackColor = true;
+            buttonRunShow.Click += buttonRunShow_Click;
             // 
             // groupBoxMusic
             // 
@@ -223,6 +233,7 @@
             axWindowsMediaPlayer1.OcxState = (System.Windows.Forms.AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new System.Drawing.Size(225, 45);
             axWindowsMediaPlayer1.TabIndex = 1;
+            axWindowsMediaPlayer1.PlayStateChange += axWindowsMediaPlayer1_PlayStateChange;
             // 
             // dataGridMusic
             // 
@@ -241,14 +252,15 @@
             dataGridMusic.TabIndex = 0;
             dataGridMusic.SelectionChanged += dataGridMusic_SelectionChanged;
             // 
-            // buttonAddSelectedtoScene
+            // buttonAddToNext
             // 
-            buttonAddSelectedtoScene.Location = new System.Drawing.Point(228, 22);
-            buttonAddSelectedtoScene.Name = "buttonAddSelectedtoScene";
-            buttonAddSelectedtoScene.Size = new System.Drawing.Size(148, 55);
-            buttonAddSelectedtoScene.TabIndex = 3;
-            buttonAddSelectedtoScene.Text = "Add Selected to New Trigger";
-            buttonAddSelectedtoScene.UseVisualStyleBackColor = true;
+            buttonAddToNext.Location = new System.Drawing.Point(193, 52);
+            buttonAddToNext.Name = "buttonAddToNext";
+            buttonAddToNext.Size = new System.Drawing.Size(235, 33);
+            buttonAddToNext.TabIndex = 3;
+            buttonAddToNext.Text = "Add Selected to Next of other event";
+            buttonAddToNext.UseVisualStyleBackColor = true;
+            buttonAddToNext.Click += buttonAddToNext_Click;
             // 
             // groupBoxSceneSelector
             // 
@@ -323,34 +335,65 @@
             // 
             // buttonRunFromSelected
             // 
-            buttonRunFromSelected.Location = new System.Drawing.Point(601, 623);
+            buttonRunFromSelected.Location = new System.Drawing.Point(531, 623);
             buttonRunFromSelected.Name = "buttonRunFromSelected";
             buttonRunFromSelected.Size = new System.Drawing.Size(183, 43);
             buttonRunFromSelected.TabIndex = 4;
             buttonRunFromSelected.Text = "Run Show from Selected";
             buttonRunFromSelected.UseVisualStyleBackColor = true;
-            buttonRunFromSelected.Click += button1_Click;
+            buttonRunFromSelected.Click += buttonRunFromSelected_Click;
             // 
             // buttonStopShow
             // 
-            buttonStopShow.Location = new System.Drawing.Point(983, 623);
+            buttonStopShow.Location = new System.Drawing.Point(913, 623);
             buttonStopShow.Name = "buttonStopShow";
             buttonStopShow.Size = new System.Drawing.Size(154, 43);
             buttonStopShow.TabIndex = 5;
             buttonStopShow.Text = "Stop Show";
             buttonStopShow.UseVisualStyleBackColor = true;
+            buttonStopShow.Click += buttonStopShow_Click;
             // 
             // groupBoxTreeControls
             // 
+            groupBoxTreeControls.Controls.Add(groupBox7);
             groupBoxTreeControls.Controls.Add(buttonAddNewEvent);
-            groupBoxTreeControls.Controls.Add(buttonEditTrigger);
-            groupBoxTreeControls.Controls.Add(buttonAddSelectedtoScene);
             groupBoxTreeControls.Location = new System.Drawing.Point(601, 17);
             groupBoxTreeControls.Name = "groupBoxTreeControls";
-            groupBoxTreeControls.Size = new System.Drawing.Size(600, 91);
+            groupBoxTreeControls.Size = new System.Drawing.Size(600, 127);
             groupBoxTreeControls.TabIndex = 6;
             groupBoxTreeControls.TabStop = false;
             groupBoxTreeControls.Text = "Show Tree Controls";
+            // 
+            // groupBox7
+            // 
+            groupBox7.Controls.Add(comboBoxEventsAddtoEvent);
+            groupBox7.Controls.Add(buttonAddAsInterupt);
+            groupBox7.Controls.Add(buttonAddToNext);
+            groupBox7.Location = new System.Drawing.Point(160, 21);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new System.Drawing.Size(434, 91);
+            groupBox7.TabIndex = 7;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Add to Event to Selected Event";
+            // 
+            // comboBoxEventsAddtoEvent
+            // 
+            comboBoxEventsAddtoEvent.FormattingEnabled = true;
+            comboBoxEventsAddtoEvent.Items.AddRange(new object[] { "[END]" });
+            comboBoxEventsAddtoEvent.Location = new System.Drawing.Point(6, 22);
+            comboBoxEventsAddtoEvent.Name = "comboBoxEventsAddtoEvent";
+            comboBoxEventsAddtoEvent.Size = new System.Drawing.Size(171, 23);
+            comboBoxEventsAddtoEvent.TabIndex = 6;
+            // 
+            // buttonAddAsInterupt
+            // 
+            buttonAddAsInterupt.Location = new System.Drawing.Point(193, 12);
+            buttonAddAsInterupt.Name = "buttonAddAsInterupt";
+            buttonAddAsInterupt.Size = new System.Drawing.Size(235, 33);
+            buttonAddAsInterupt.TabIndex = 4;
+            buttonAddAsInterupt.Text = "Add Selected as Interuptable";
+            buttonAddAsInterupt.UseVisualStyleBackColor = true;
+            buttonAddAsInterupt.Click += buttonAddAsInterupt_Click;
             // 
             // buttonAddNewEvent
             // 
@@ -361,15 +404,6 @@
             buttonAddNewEvent.Text = "Add New Event";
             buttonAddNewEvent.UseVisualStyleBackColor = true;
             buttonAddNewEvent.Click += buttonAddNewEvent_Click;
-            // 
-            // buttonEditTrigger
-            // 
-            buttonEditTrigger.Location = new System.Drawing.Point(382, 22);
-            buttonEditTrigger.Name = "buttonEditTrigger";
-            buttonEditTrigger.Size = new System.Drawing.Size(153, 55);
-            buttonEditTrigger.TabIndex = 4;
-            buttonEditTrigger.Text = "Edit Selected Trigger";
-            buttonEditTrigger.UseVisualStyleBackColor = true;
             // 
             // groupBoxArd
             // 
@@ -444,23 +478,60 @@
             dataGridARD.Size = new System.Drawing.Size(560, 138);
             dataGridARD.TabIndex = 0;
             // 
-            // buttonMoveTriggerDown
+            // buttonMoveEventDown
             // 
-            buttonMoveTriggerDown.Location = new System.Drawing.Point(1143, 366);
-            buttonMoveTriggerDown.Name = "buttonMoveTriggerDown";
-            buttonMoveTriggerDown.Size = new System.Drawing.Size(58, 55);
-            buttonMoveTriggerDown.TabIndex = 5;
-            buttonMoveTriggerDown.Text = "Move Trigger Down";
-            buttonMoveTriggerDown.UseVisualStyleBackColor = true;
+            buttonMoveEventDown.Location = new System.Drawing.Point(1143, 366);
+            buttonMoveEventDown.Name = "buttonMoveEventDown";
+            buttonMoveEventDown.Size = new System.Drawing.Size(58, 55);
+            buttonMoveEventDown.TabIndex = 5;
+            buttonMoveEventDown.Text = "Move Event Down";
+            buttonMoveEventDown.UseVisualStyleBackColor = true;
+            buttonMoveEventDown.Click += buttonMoveEventDown_Click;
             // 
-            // buttonMoveTriggerUp
+            // buttonMoveEventUp
             // 
-            buttonMoveTriggerUp.Location = new System.Drawing.Point(1143, 305);
-            buttonMoveTriggerUp.Name = "buttonMoveTriggerUp";
-            buttonMoveTriggerUp.Size = new System.Drawing.Size(58, 55);
-            buttonMoveTriggerUp.TabIndex = 9;
-            buttonMoveTriggerUp.Text = "Move Trigger Up";
-            buttonMoveTriggerUp.UseVisualStyleBackColor = true;
+            buttonMoveEventUp.Location = new System.Drawing.Point(1143, 305);
+            buttonMoveEventUp.Name = "buttonMoveEventUp";
+            buttonMoveEventUp.Size = new System.Drawing.Size(58, 55);
+            buttonMoveEventUp.TabIndex = 9;
+            buttonMoveEventUp.Text = "Move Event Up";
+            buttonMoveEventUp.UseVisualStyleBackColor = true;
+            buttonMoveEventUp.Click += buttonMoveEventUp_Click;
+            // 
+            // buttonSaveShow
+            // 
+            buttonSaveShow.Location = new System.Drawing.Point(13, 629);
+            buttonSaveShow.Name = "buttonSaveShow";
+            buttonSaveShow.Size = new System.Drawing.Size(131, 43);
+            buttonSaveShow.TabIndex = 10;
+            buttonSaveShow.Text = "Save Show";
+            buttonSaveShow.UseVisualStyleBackColor = true;
+            buttonSaveShow.Click += buttonSaveShow_Click;
+            // 
+            // buttonLoadShow
+            // 
+            buttonLoadShow.Location = new System.Drawing.Point(150, 629);
+            buttonLoadShow.Name = "buttonLoadShow";
+            buttonLoadShow.Size = new System.Drawing.Size(131, 43);
+            buttonLoadShow.TabIndex = 11;
+            buttonLoadShow.Text = "Load Show";
+            buttonLoadShow.UseVisualStyleBackColor = true;
+            buttonLoadShow.Click += buttonLoadShow_Click;
+            // 
+            // timerShow
+            // 
+            timerShow.Interval = 50;
+            timerShow.Tick += timerShow_Tick;
+            // 
+            // timerPlayMediaEnd
+            // 
+            timerPlayMediaEnd.Interval = 50;
+            timerPlayMediaEnd.Tick += timerPlayMediaEnd_Tick;
+            // 
+            // timerScene
+            // 
+            timerScene.Interval = 50;
+            timerScene.Tick += timerScene_Tick;
             // 
             // ShowTriggers
             // 
@@ -468,8 +539,10 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             ClientSize = new System.Drawing.Size(1216, 684);
-            Controls.Add(buttonMoveTriggerUp);
-            Controls.Add(buttonMoveTriggerDown);
+            Controls.Add(buttonLoadShow);
+            Controls.Add(buttonSaveShow);
+            Controls.Add(buttonMoveEventUp);
+            Controls.Add(buttonMoveEventDown);
             Controls.Add(groupBoxArd);
             Controls.Add(groupBoxTreeControls);
             Controls.Add(buttonStopShow);
@@ -496,6 +569,7 @@
             groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarRunTime).EndInit();
             groupBoxTreeControls.ResumeLayout(false);
+            groupBox7.ResumeLayout(false);
             groupBoxArd.ResumeLayout(false);
             groupBox5.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
@@ -510,18 +584,18 @@
         private System.Windows.Forms.GroupBox groupBoxMusic;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private System.Windows.Forms.DataGridView dataGridMusic;
-        private System.Windows.Forms.Button buttonAddSelectedtoScene;
+        private System.Windows.Forms.Button buttonAddToNext;
         private System.Windows.Forms.Button buttonPlaySample;
         private System.Windows.Forms.GroupBox groupBoxSceneSelector;
         private System.Windows.Forms.Button buttonRunFromSelected;
         private System.Windows.Forms.ComboBox comboBoxScene;
         private System.Windows.Forms.Button buttonStopShow;
         private System.Windows.Forms.GroupBox groupBoxTreeControls;
-        private System.Windows.Forms.Button buttonEditTrigger;
+        private System.Windows.Forms.Button buttonAddAsInterupt;
         private System.Windows.Forms.GroupBox groupBoxArd;
         private System.Windows.Forms.DataGridView dataGridARD;
-        private System.Windows.Forms.Button buttonMoveTriggerDown;
-        private System.Windows.Forms.Button buttonMoveTriggerUp;
+        private System.Windows.Forms.Button buttonMoveEventDown;
+        private System.Windows.Forms.Button buttonMoveEventUp;
         private System.Windows.Forms.Button ShowSceneButton;
         private System.Windows.Forms.Button addsceneToQueue;
         private System.Windows.Forms.Button addSelectedSoundtoSelectedTrigger;
@@ -542,5 +616,12 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TrackBar trackBarRunTime;
         private System.Windows.Forms.TextBox textBoxRunTime;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.ComboBox comboBoxEventsAddtoEvent;
+        private System.Windows.Forms.Button buttonSaveShow;
+        private System.Windows.Forms.Button buttonLoadShow;
+        private System.Windows.Forms.Timer timerShow;
+        private System.Windows.Forms.Timer timerPlayMediaEnd;
+        private System.Windows.Forms.Timer timerScene;
     }
 }
